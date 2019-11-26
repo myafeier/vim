@@ -4,7 +4,8 @@ syntax on
 filetype plugin indent on
 filetype off                                                                             
 set tabstop=4  
-set shiftwidth=4   
+set shiftwidth=4  
+set number
 "colorscheme molokai
 "set t_Co=256
 "set background=dark
@@ -22,7 +23,10 @@ Plugin 'posva/vim-vue'
 call vundle#end()                                                                         
 filetype plugin indent on                                                                
 let mapleader=";"                                                     
-map <leader>n :NERDTreeToggle<CR>                                                         
+nmap <Leader>a ggVG
+vnoremap <Leader>y :w !pbcopy<CR><CR>
+nmap <Leader>p :r !pbpaste<CR><CR>
+map <leader>n :NERDTreeToggle<CR>
 nmap <leader>t :TagbarToggle<CR>
 
 "打开文件自动 打开tagbar  
