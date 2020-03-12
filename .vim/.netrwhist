@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =8
+let g:netrw_dirhist_8='/Users/xiafei/workspace/yuanzhilian_chenchao/trace_api'
+let g:netrw_dirhist_7='/Users/xiafei/workspace/decibel/golang/src/decibel/merchant'
+let g:netrw_dirhist_6='/Users/xiafei/workspace/yuanzhilian_chenchao/trace_api'
+let g:netrw_dirhist_5='/Users/xiafei/workspace/yuanzhilian_chenchao/trace_api/controller'
+let g:netrw_dirhist_4='/Users/xiafei/workspace/yuanzhilian_chenchao/trace_api'
+let g:netrw_dirhist_3='/Users/xiafei/workspace/yuanzhilian_chenchao/trace_api/controller'
+let g:netrw_dirhist_2='/Users/xiafei/workspace/yuanzhilian_chenchao/trace_api'
+let g:netrw_dirhist_1='/Users/xiafei/workspace/yuanzhilian_chenchao/trace_api/controller'
+let g:netrw_dirhist_0='/Users/xiafei/workspace/yuanzhilian_chenchao/trace_api'
+let g:netrw_dirhist_9='/Users/xiafei/workspace/yuanzhilian_chenchao/trace_api/controller'
