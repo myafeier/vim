@@ -12,31 +12,56 @@ Plug 'NLKNguyen/papercolor-theme'
 Plug 'chemzqm/wxapp.vim'
 Plug 'mattn/emmet-vim'
 Plug 'SirVer/ultisnips'
-
-
-
+Plug 'posva/vim-vue'
+Plug 'digitaltoad/vim-pug'
+Plug 'Yggdroot/indentLine'
 call plug#end()
 " colors
 "
 colorscheme PaperColor
 set background=dark
 
-
+let &termencoding=&encoding
+set fileencodings=utf-8,gbk
 
 syntax on
 set autoread " 设置当文件被改动时自动载入
 set cul "高亮光标所在行
-set autowrite "自动保存
 set cuc "高亮所在列
+set autowrite "自动保存
 set scrolloff=3     " 光标移动到buffer的顶部和底部时保持3行距离  
-" 自动缩进
+set showmatch  " 括弧匹配
+
+" 默认缩进设置
 set autoindent
-set cindent
-" Tab键的宽度
+set smartindent
 set tabstop=4
-" 统一缩进为4
 set softtabstop=4
 set shiftwidth=4
+set expandtab
+
+au BufNewFile,BufRead *.html,*.js,*.yaml,*.vue 
+\ set tabstop=2 |
+\ set softtabstop=2 |
+\ set shiftwidth=2 |
+\ set expandtab |
+\ set autoindent |
+\ set fileformat=unix |
+
+au BufNewFile,BufRead *.php,*.conf 
+\ set tabstop=4 |
+\ set softtabstop=4 |
+\ set shiftwidth=4 |
+\ set expandtab |
+\ set autoindent |
+\ set fileformat=unix |
+
+
+
+"autocmd FileType vue syntax sync fromstart
+
+set cindent
+" Tab键的宽度
 " 使用空格代替制表符
 set expandtab
 " 在行和段开始处使用制表符
@@ -53,9 +78,6 @@ filetype indent on
 let mapleader=";"
 set number
 set laststatus=2
-filetype on
-filetype plugin on
-filetype indent on
 set backspace=2  "把 delete 键配置成增强模式
 set laststatus=2 " 启动显示状态行(1),总是显示状态行(2) 
 set nocompatible  "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
@@ -97,10 +119,25 @@ let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
-
+" netrw confing
+let g:netrw_liststyle = 4
+let g:netrw_banner = 0
+let g:netrw_winsize = 25
+"用水平拆分窗口打开文件
+"用垂直拆分窗口打开文件
+"用新建标签页打开文件
+"用前一个窗口打开文件
+"
+"let g:netrw_browse_split =2
 
 " config of coc.nvim
 "
+
+let g:coc_global_extensions = ['coc-tsserver','coc-html','coc-css', 'coc-json',
+            \ 'coc-emmet','coc-ultisnips','coc-yaml','coc-vetur','coc-eslint','coc-xml','coc-phpls',
+            \ 'coc-markdownlint','coc-highlight']
+
+
 " TextEdit might fail if hidden is not set.
 set hidden
 
@@ -207,8 +244,8 @@ omap af <Plug>(coc-funcobj-a)
 " Use <TAB> for selections ranges.
 " NOTE: Requires 'textDocument/selectionRange' support from the language server.
 " coc-tsserver, coc-python are the examples of servers that support it.
-nmap <silent> <TAB> <Plug>(coc-range-select)
-xmap <silent> <TAB> <Plug>(coc-range-select)
+"nmap <silent> <TAB> <Plug>(coc-range-select)
+"xmap <silent> <TAB> <Plug>(coc-range-select)
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
