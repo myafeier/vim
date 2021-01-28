@@ -1,18 +1,65 @@
 {
-	"languageserver": {
-		"golang":{
-			"command": "gopls",
-			"rootPatterns": ["go.mod",".vim/",".git/"],
-			"filetypes": ["go"]
-		},
-		"intelephense": {
-        		"command": "intelephense",
-            	    	"args": ["--stdio"],
-            		"filetypes": ["php"],
-            		"initializationOptions": {
-                		"storagePath": "/tmp/intelephense"
-            		}
-        	}
-	}
-        
+  "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "javascriptreact",
+    "typescript.tsx",
+    "css",
+    "Markdown",
+    "less",
+    "sass",
+    "scss",
+    "html",
+    "vue",
+    "php",
+    "python",
+    "xml",
+    "wxml",
+    "wxss"
+  ],
+  "eslint.filetypes": [
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "javascriptreact",
+    "typescript.tsx",
+    "scss",
+    "vue",
+    "php"
+  ],
+  "eslint.enable": true,
+  "eslint.autoFixOnSave": true,
+
+  "vetur.completion.autoImport": true,
+  "vetur.format.enable": true,
+  "vetur.format.styleInitialIndent": true,
+
+  "prettier.proseWrap": "never",
+  "prettier.htmlWhitespaceSensitivity": "ignore",
+  "prettier.jsxSingleQuote": true,
+  "prettier.trailingComma": "none",
+  "prettier.disableLanguages": [],
+  "prettier.singleQuote": true,
+  "prettier.semi": false,
+  "prettier.disableSuccessMessage": true,
+
+  "python.autoComplete.extraPaths": [
+    "/Users/xiafei/workspace/huanji/project/odoo/odoo-14.0+e.20201009",
+    "/usr/local/lib/python3.7/site-packages"
+  ],
+  "python.jediEnabled": false,
+  "python.formatting.provider": "autopep8",
+  "snippets.ultisnips.directories": ["UltiSnips", "gosnippets/UltiSnips"],
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".git/", ".vim/"],
+      "filetypes": ["go"],
+      "initializationOptions": {
+        "usePlaceholders": true
+      }
+    }
+  }
 }

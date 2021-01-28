@@ -6,23 +6,39 @@ endif
 
 
 call plug#begin('~/.vim/plugged')
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release', 'tag':'v0.0.80'}
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'NLKNguyen/papercolor-theme'
-Plug 'chemzqm/wxapp.vim'
 Plug 'mattn/emmet-vim'
-Plug 'SirVer/ultisnips'
-Plug 'posva/vim-vue'
 Plug 'digitaltoad/vim-pug'
 Plug 'Yggdroot/indentLine'
+Plug 'luochen1990/rainbow'
+Plug 'jiangmiao/auto-pairs'
+Plug 'vim-scripts/ctags.vim'
+Plug 'majutsushi/tagbar'
+Plug 'dNitro/vim-pug-complete', { 'for': ['jade', 'pug'] }
+Plug 'chemzqm/wxapp.vim'
+Plug 'voldikss/vim-translator'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+
 call plug#end()
 " colors
 "
 colorscheme PaperColor
+
+set noswapfile
 set background=dark
 
 let &termencoding=&encoding
 set fileencodings=utf-8,gbk
+
+set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
+set enc=utf8
+set fencs=utf8,gbk,gb2312,gb18030
+
+
 
 syntax on
 set autoread " 设置当文件被改动时自动载入
@@ -39,6 +55,16 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
+
+set t_ut=  "防止vim背景颜色错误
+
+" ==================  indentLine ===============
+let g:indentLine_color_term = 239
+let g:indentLine_color_tty_light = 7 " (default: 4)
+let g:indentLine_color_dark = 1 " (default: 2)
+let g:vim_json_syntax_conceal = 1 "" 为了防止导致json的引号自动隐藏
+let g:indentLine_noConcealCursor=""  " 为了防止导致json的引号自动隐藏
+
 
 au BufNewFile,BufRead *.html,*.js,*.yaml,*.vue 
 \ set tabstop=2 |
@@ -73,16 +99,76 @@ filetype plugin on
 " 为特定文件类型载入相关缩进文件
 filetype indent on
 
+set ambiwidth=double " 设置为双字宽显示，否则无法完整显示如:☆
+set t_ut= " 防止vim背景颜色错误
+set showmatch " 高亮匹配括号
+
 " settings
 "
 let mapleader=";"
 set number
-set laststatus=2
 set backspace=2  "把 delete 键配置成增强模式
-set laststatus=2 " 启动显示状态行(1),总是显示状态行(2) 
 set nocompatible  "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
 set helplang=cn
 set encoding=utf-8
+
+
+" =========                                                             
+" vim-translator                         
+" =========                                     
+" 在窗口中显示翻译                                                            
+nmap <silent> <Leader>t <Plug>TranslateW      
+" 将文字替换为翻译             
+nmap <silent> <Leader>r <Plug>TranslateR
+" 翻译剪贴板中的文字                                                                                     
+nmap <silent> <Leader>x <Plug>TranslateX
+
+
+
+" =========
+" vim-airline
+" =========
+"
+let g:airline_powerline_fonts = 1
+" 
+ let g:airline#extensions#whitespace#enabled = 0
+ let g:airline#extensions#whitespace#symbol = '!'
+" 
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#buffer_nr_show = 0
+let g:airline#extensions#tabline#formatter = 'default'
+let g:airline_theme = 'murmur'  " ‰∏ªÈ¢ò
+let g:airline#extensions#keymap#enabled = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tabline#buffer_idx_format = {
+       \ '0': '0 ',
+       \ '1': '1 ',
+       \ '2': '2 ',
+       \ '3': '3 ',
+       \ '4': '4 ',
+       \ '5': '5 ',
+       \ '6': '6 ',
+       \ '7': '7 ',
+       \ '8': '8 ',
+       \ '9': '9 '
+       \}
+" ËÆæÁΩÆÂàáÊç¢tabÁöÑÂø´Êç∑ÈîÆ <\> + <i> ÂàáÊç¢Âà∞Á¨¨i‰∏™ tab
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
+" ËÆæÁΩÆÂàáÊç¢tabÁöÑÂø´Êç∑ÈîÆ <\> + <-> ÂàáÊç¢Âà∞Ââç‰∏Ä‰∏™ tab
+nmap <leader>- <Plug>AirlineSelectPrevTab
+" ËÆæÁΩÆÂàáÊç¢tabÁöÑÂø´Êç∑ÈîÆ <\> + <+> ÂàáÊç¢Âà∞Âêé‰∏Ä‰∏™ tab
+nmap <leader>+ <Plug>AirlineSelectNextTab
+" ËÆæÁΩÆÂàáÊç¢tabÁöÑÂø´Êç∑ÈîÆ <\> + <q> ÈÄÄÂá∫ÂΩìÂâçÁöÑ tab
+nmap <leader>q :bp<cr>:bd #<cr>
 
 
 " 显示状态行当前设置
@@ -104,14 +190,22 @@ set encoding=utf-8
 " %{"[fenc=".(&fenc==""?&enc:&fenc).((exists("+bomb") && &bomb)?"+":"")."]"} 显示文件编码
 " %{&ff} 显示文件类型
 "set statusline=%F%m%r%h%w%=\ [ft=%Y]\ %{\"[fenc=\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\"+\":\"\").\"]\"}\ [ff=%{&ff}]\ [asc=%03.3b]\ [hex=%02.2B]\ [pos=%04l,%04v][%p%%]\ [len=%L]
-set statusline=%F%m%r%h%w%=\ [ft=%Y]\ [pos=%04l,%04v]\ [%p%%]\ [line:\ %l\ of\ %L]
+" set statusline=%F%m%r%h%w%=\ [Type=%Y]\ [pos=%04l,%04v]\ [%p%%]\ [line:\ %l\ of\ %L]
+
 " 设置 laststatus = 0 ，不显式状态行
 " 设置 laststatus = 1 ，仅当窗口多于一个时，显示状态行
 " 设置 laststatus = 2 ，总是显式状态行
+set laststatus=2 
+
 nmap <c-a> ggVG
 vnoremap <c-y> :w !pbcopy<CR><CR>
 nmap <c-p> :r !pbpaste<CR><CR>
 imap jk <ESC>
+nnoremap <silent> <F4> :TagbarToggle<CR> " 将tagbar的开关按键设置为 F4
+
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+nnoremap <silent> <F4> :TagbarToggle<CR> " 将tagbar的开关按键设置为 F4"
 vmap <C-c> "+y
 imap <C-v> <Esc>"*pa
 " ultisnips config
@@ -133,9 +227,7 @@ let g:netrw_winsize = 25
 " config of coc.nvim
 "
 
-let g:coc_global_extensions = ['coc-tsserver','coc-html','coc-css', 'coc-json',
-            \ 'coc-emmet','coc-ultisnips','coc-yaml','coc-vetur','coc-eslint','coc-xml','coc-phpls',
-            \ 'coc-markdownlint','coc-highlight']
+let g:coc_global_extensions = ['coc-tsserver','coc-html','coc-css', 'coc-json','coc-yaml','coc-vetur','coc-eslint','coc-xml','coc-phpls', 'coc-markdownlint','coc-highlight']
 
 
 " TextEdit might fail if hidden is not set.
@@ -259,7 +351,7 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Mappings using CoCList:
 " Show all diagnostics.
@@ -278,32 +370,60 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+" =============translate===============
+" popup
+nmap <Leader>t <Plug>(coc-translator-p)
+vmap <Leader>t <Plug>(coc-translator-pv)
+" echo
+nmap <Leader>e <Plug>(coc-translator-e)
+nmap <Leader>e <Plug>(coc-translator-ev)
+" replace
+nmap <Leader>r <Plug>(coc-translator-r)
+nmap <Leader>r <Plug>(coc-translator-rv)
 
-"coc-snippets
-" Use <C-l> for trigger snippet expand.
-"imap <C-l> <Plug>(coc-snippets-expand)
 
-" Use <C-j> for select text for visual placeholder of snippet.
-"vmap <C-j> <Plug>(coc-snippets-select)
+" -------for Vim-go
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
 
-" Use <C-j> for jump to next placeholder, it's default of coc.nvim
-"let g:coc_snippet_next = '<c-j>'
 
-" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-"let g:coc_snippet_prev = '<c-k>'
 
-" Use <C-j> for both expand and jump (make expand higher priority.)
-"imap <C-j> <Plug>(coc-snippets-expand-jump)
-
-"inoremap <silent><expr> <TAB>
-"      \ pumvisible() ? coc#_select_confirm() :
-"      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-"      \ <SID>check_back_space() ? "\<TAB>" :
-"      \ coc#refresh()
-
-"function! s:check_back_space() abort
-"  let col = col('.') - 1
-"  return !col || getline('.')[col - 1]  =~# '\s'
-"endfunction
-
-"let g:coc_snippet_next = '<tab>'
+  " =============emmet==============================
+  let g:user_emmet_settings = {
+  \ 'wxss': {
+  \   'extends': 'css',
+  \ },
+  \ 'wxml': {
+  \   'extends': 'html',
+  \   'aliases': {
+  \     'div': 'view',
+  \     'span': 'text',
+  \   },
+  \  'default_attributes': {
+  \     'block': [{'wx:for-items': '{{list}}','wx:for-item': '{{item}}'}],
+  \     'navigator': [{'url': '', 'redirect': 'false'}],
+  \     'scroll-view': [{'bindscroll': ''}],
+  \     'swiper': [{'autoplay': 'false', 'current': '0'}],
+  \     'icon': [{'type': 'success', 'size': '23'}],
+  \     'progress': [{'precent': '0'}],
+  \     'button': [{'size': 'default'}],
+  \     'checkbox-group': [{'bindchange': ''}],
+  \     'checkbox': [{'value': '', 'checked': ''}],
+  \     'form': [{'bindsubmit': ''}],
+  \     'input': [{'type': 'text'}],
+  \     'label': [{'for': ''}],
+  \     'picker': [{'bindchange': ''}],
+  \     'radio-group': [{'bindchange': ''}],
+  \     'radio': [{'checked': ''}],
+  \     'switch': [{'checked': ''}],
+  \     'slider': [{'value': ''}],
+  \     'action-sheet': [{'bindchange': ''}],
+  \     'modal': [{'title': ''}],
+  \     'loading': [{'bindchange': ''}],
+  \     'toast': [{'duration': '1500'}],
+  \     'audio': [{'src': ''}],
+  \     'video': [{'src': ''}],
+  \     'image': [{'src': '', 'mode': 'scaleToFill'}],
+  \   }
+  \ },
+  \}
