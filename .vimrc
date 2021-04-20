@@ -21,6 +21,12 @@ Plug 'chemzqm/wxapp.vim'
 Plug 'voldikss/vim-translator'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'iamcco/markdown-preview.vim'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+Plug 'SirVer/ultisnips'
+Plug 'scrooloose/nerdcommenter'
+"Plug 'akretion/vim-odoo-snippets"
 
 
 call plug#end()
@@ -48,15 +54,58 @@ set autowrite "自动保存
 set scrolloff=3     " 光标移动到buffer的顶部和底部时保持3行距离  
 set showmatch  " 括弧匹配
 
+set laststatus=2 "1为关闭底部状态栏 2为开启"
+set t_Co=256     "终端开启256色支持"
+
 " 默认缩进设置
 set autoindent
 set smartindent
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set expandtab
-
 set t_ut=  "防止vim背景颜色错误
+
+"autocmd FileType vue syntax sync fromstart
+set ambiwidth=double " 设置为双字宽显示，否则无法完整显示如:☆
+set t_ut= " 防止vim背景颜色错误
+set showmatch " 高亮匹配括号
+
+" settings
+"
+let mapleader=";"
+set number
+set backspace=2  "把 delete 键配置成增强模式
+set nocompatible  "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
+set helplang=cn
+set encoding=utf-8
+
+
+set cindent
+" Tab键的宽度
+" 使用空格代替制表符
+set expandtab
+" 在行和段开始处使用制表符
+set smarttab
+
+
+" 侦测文件类型
+filetype on
+" 载入文件类型插件
+filetype plugin on
+" 为特定文件类型载入相关缩进文件
+filetype indent on
+
+
+" =========                                                             
+" vim-translator                         
+" =========                                     
+" 在窗口中显示翻译                                                            
+nmap <silent> <Leader>t <Plug>TranslateW      
+" 将文字替换为翻译             
+nmap <silent> <Leader>r <Plug>TranslateR
+" 翻译剪贴板中的文字                                                                                     
+nmap <silent> <Leader>X <Plug>TranslateX
+
 
 " ==================  indentLine ===============
 let g:indentLine_color_term = 239
@@ -84,46 +133,6 @@ au BufNewFile,BufRead *.php,*.conf
 
 
 
-"autocmd FileType vue syntax sync fromstart
-
-set cindent
-" Tab键的宽度
-" 使用空格代替制表符
-set expandtab
-" 在行和段开始处使用制表符
-set smarttab
-" 侦测文件类型
-filetype on
-" 载入文件类型插件
-filetype plugin on
-" 为特定文件类型载入相关缩进文件
-filetype indent on
-
-set ambiwidth=double " 设置为双字宽显示，否则无法完整显示如:☆
-set t_ut= " 防止vim背景颜色错误
-set showmatch " 高亮匹配括号
-
-" settings
-"
-let mapleader=";"
-set number
-set backspace=2  "把 delete 键配置成增强模式
-set nocompatible  "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
-set helplang=cn
-set encoding=utf-8
-
-
-" =========                                                             
-" vim-translator                         
-" =========                                     
-" 在窗口中显示翻译                                                            
-nmap <silent> <Leader>t <Plug>TranslateW      
-" 将文字替换为翻译             
-nmap <silent> <Leader>r <Plug>TranslateR
-" 翻译剪贴板中的文字                                                                                     
-nmap <silent> <Leader>x <Plug>TranslateX
-
-
 
 " =========
 " vim-airline
@@ -134,7 +143,7 @@ let g:airline_powerline_fonts = 1
  let g:airline#extensions#whitespace#enabled = 0
  let g:airline#extensions#whitespace#symbol = '!'
 " 
-let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#enabled = 0
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#buffer_nr_show = 0
 let g:airline#extensions#tabline#formatter = 'default'
@@ -164,11 +173,18 @@ nmap <leader>7 <Plug>AirlineSelectTab7
 nmap <leader>8 <Plug>AirlineSelectTab8
 nmap <leader>9 <Plug>AirlineSelectTab9
 " ËÆæÁΩÆÂàáÊç¢tabÁöÑÂø´Êç∑ÈîÆ <\> + <-> ÂàáÊç¢Âà∞Ââç‰∏Ä‰∏™ tab
-nmap <leader>- <Plug>AirlineSelectPrevTab
+"nmap gT <Plug>AirlineSelectPrevTab
 " ËÆæÁΩÆÂàáÊç¢tabÁöÑÂø´Êç∑ÈîÆ <\> + <+> ÂàáÊç¢Âà∞Âêé‰∏Ä‰∏™ tab
-nmap <leader>+ <Plug>AirlineSelectNextTab
+"nmap gt <Plug>AirlineSelectNextTab
 " ËÆæÁΩÆÂàáÊç¢tabÁöÑÂø´Êç∑ÈîÆ <\> + <q> ÈÄÄÂá∫ÂΩìÂâçÁöÑ tab
 nmap <leader>q :bp<cr>:bd #<cr>
+
+" 分类宽度调整快捷键
+"map <up> :res +5<CR>
+"map <down> :res -5<CR>
+"map <left> :vertical resize-5<CR>
+"map <right> :vertical resize+5<CR>
+
 
 
 " 显示状态行当前设置
@@ -238,7 +254,7 @@ set nobackup
 set nowritebackup
 
 " Give more space for displaying messages.
-set cmdheight=2
+" set cmdheight=2
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
@@ -370,19 +386,12 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
-" =============translate===============
-" popup
-nmap <Leader>t <Plug>(coc-translator-p)
-vmap <Leader>t <Plug>(coc-translator-pv)
-" echo
-nmap <Leader>e <Plug>(coc-translator-e)
-nmap <Leader>e <Plug>(coc-translator-ev)
-" replace
-nmap <Leader>r <Plug>(coc-translator-r)
-nmap <Leader>r <Plug>(coc-translator-rv)
 
 
 " -------for Vim-go
+let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']"
+
+let g:go_highlight_types = 1
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 
@@ -427,3 +436,64 @@ let g:go_info_mode='gopls'
   \   }
   \ },
   \}
+
+" =========
+" emmet-vim
+" =========
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
+
+
+" =========
+" rainbow
+" =========
+let g:rainbow_active = 1
+let g:rainbow_conf = {
+\   'guifgs': ['darkorange3', 'seagreen3', 'royalblue3', 'firebrick'],
+\   'ctermfgs': ['lightyellow', 'lightcyan','lightblue', 'lightmagenta'],
+\   'operators': '_,_',
+\   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+\   'separately': {
+\       '*': {},
+\       'tex': {
+\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
+\       },
+\       'lisp': {
+\           'guifgs': ['darkorange3', 'seagreen3', 'royalblue3', 'firebrick'],
+\       },
+\       'vim': {
+\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
+\       },
+\       'html': {
+\           'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
+\       },
+\       'css': 0,
+\   }
+\}
+
+" ===========nerdcommenter==============
+" add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+" python 自动的会多加一个空格
+au FileType python let g:NERDSpaceDelims = 0
+
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_java = 1
+
+" Add your own custom formats or override the defaults
+" let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+" Enable NERDCommenterToggle to check all selected lines is commented or not
+let g:NERDToggleCheckAllLines = 1
