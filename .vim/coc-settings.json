@@ -29,5 +29,5 @@
   },
   "suggest.noselect": false,
   "suggest.floatEnable": true,
-  "snippets.ultisnips.directories": ["UltiSnips", "gosnippets/UltiSnips"]
+  "snippets.ultisnips.directories": ["~/.vim/plugged/vim-go/gosnippets/UltiSnips"]
 }
