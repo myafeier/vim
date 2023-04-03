@@ -1,53 +1,33 @@
 {
-  "coc.preferences.formatOnSaveFiletypes": [
-    "javascript",
-    "typescript",
-    "typescriptreact",
-    "json",
-    "javascriptreact",
-    "typescript.tsx",
-    "css",
-    "Markdown",
-    "less",
-    "sass",
-    "scss",
-    "html",
-    "vue",
-    "php",
-    "python",
-    "xml",
-    "wxml",
-    "wxss"
-  ],
-  "eslint.autoFixOnSave": true,
+  "coc.preferences.formatOnType": true,
+  "coc.preferences.formatOnSaveFiletypes": ["python", "go", "vue", "html", "js", "typescript", "json", "php", "xml"],
 
-  "vetur.completion.autoImport": true,
-  "vetur.format.enable": true,
-  "vetur.format.styleInitialIndent": true,
-
-  "prettier.proseWrap": "never",
-  "prettier.htmlWhitespaceSensitivity": "ignore",
+  "prettier.singleQuote": true,
   "prettier.jsxSingleQuote": true,
   "prettier.trailingComma": "none",
-  "prettier.disableLanguages": [],
-  "prettier.singleQuote": true,
   "prettier.semi": false,
-  "prettier.disableSuccessMessage": true,
+  "prettier.singleAttributePerLine": false,
+  "prettier.arrowParens": "avoid",
+  "prettier.bracketSameLine": true,
+  "prettier.printWidth": 1000,
 
-  "pyright.enable": true,
-  "python.linting.enabled": true,
-  "python.formatting.provider": "autopep8",
-  "snippets.ultisnips.directories": ["UltiSnips", "gosnippets/UltiSnips"],
   "languageserver": {
+    "arduino": {
+      "command": "/usr/local/bin/arduino-language-server",
+      "rootPatterns": ["*.ino"],
+      "filetypes": ["arduino"],
+      "args": ["-cli", "/usr/local/bin/arduino-cli", "-clangd", "/usr/bin/clangd", "-cli-config", "$HOME/.arduino15/arduino-cli.yaml"]
+    },
     "golang": {
       "command": "gopls",
-      "rootPatterns": ["go.mod", ".git/", ".vim/"],
+      "rootPatterns": ["go.work", "go.mod"],
       "filetypes": ["go"],
       "initializationOptions": {
         "usePlaceholders": true
       }
     }
   },
-  "clangd.path": "/Users/xiafei/.config/coc/extensions/coc-clangd-data/install/11.0.0/clangd_11.0.0/bin/clangd"
+  "suggest.noselect": false,
+  "suggest.floatEnable": true,
+  "snippets.ultisnips.directories": ["UltiSnips", "gosnippets/UltiSnips"]
 }
-
