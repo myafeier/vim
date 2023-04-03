@@ -7,7 +7,12 @@ endif
 
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'tag':'v0.0.80'}
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'vim/killersheep'
+" Plug 'dart-lang/dart-vim-plugin'
+" for golang 
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'SirVer/ultisnips'
+" end 
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'mattn/emmet-vim'
 Plug 'digitaltoad/vim-pug'
@@ -17,25 +22,27 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'vim-scripts/ctags.vim'
 Plug 'majutsushi/tagbar'
 Plug 'dNitro/vim-pug-complete', { 'for': ['jade', 'pug'] }
-Plug 'chemzqm/wxapp.vim'
-Plug 'voldikss/vim-translator'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'iamcco/markdown-preview.vim'
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-Plug 'SirVer/ultisnips'
 Plug 'scrooloose/nerdcommenter'
+Plug 'iamcco/markdown-preview.vim'
+Plug 'iamcco/mathjax-support-for-mkdp'
+Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
+
 "Plug 'akretion/vim-odoo-snippets"
 
 
 call plug#end()
-" colors
-"
-colorscheme PaperColor
+
+
+set background=dark
+"set background=light
+
+set clipboard=unnamedplus
 
 set noswapfile
-set background=dark
 
 let &termencoding=&encoding
 set fileencodings=utf-8,gbk
@@ -44,9 +51,14 @@ set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 set enc=utf8
 set fencs=utf8,gbk,gb2312,gb18030
 
+set helplang=cn "显示中文帮助
+set mouse=a
+set clipboard=autoselect
+
+set hlsearch "搜索结果高亮显示
 
 
-syntax on
+syntax on "开启语法高亮
 set autoread " 设置当文件被改动时自动载入
 set cul "高亮光标所在行
 set cuc "高亮所在列
@@ -59,9 +71,9 @@ set t_Co=256     "终端开启256色支持"
 
 " 默认缩进设置
 set autoindent
-set smartindent
-set tabstop=4
-set softtabstop=4
+set smartindent " 开启新行时使用智能自动缩进
+set softtabstop=4 "使得按退格键时可以一次删掉 4 个空格
+set tabstop=4  "设定 tab 长度为 4
 set shiftwidth=4
 set t_ut=  "防止vim背景颜色错误
 
@@ -96,26 +108,38 @@ filetype plugin on
 filetype indent on
 
 
-" =========                                                             
-" vim-translator                         
-" =========                                     
-" 在窗口中显示翻译                                                            
-nmap <silent> <Leader>t <Plug>TranslateW      
-" 将文字替换为翻译             
-nmap <silent> <Leader>r <Plug>TranslateR
-" 翻译剪贴板中的文字                                                                                     
-nmap <silent> <Leader>X <Plug>TranslateX
 
 
-" ==================  indentLine ===============
-let g:indentLine_color_term = 239
-let g:indentLine_color_tty_light = 7 " (default: 4)
-let g:indentLine_color_dark = 1 " (default: 2)
-let g:vim_json_syntax_conceal = 1 "" 为了防止导致json的引号自动隐藏
-let g:indentLine_noConcealCursor=""  " 为了防止导致json的引号自动隐藏
+" 分类宽度调整快捷键
+"map <up> :res +5<CR>
+"map <down> :res -5<CR>
+"map <left> :vertical resize-5<CR>
+"map <right> :vertical resize+5<CR>
 
 
-au BufNewFile,BufRead *.html,*.js,*.yaml,*.vue 
+
+" 设置 laststatus = 0 ，不显式状态行
+" 设置 laststatus = 1 ，仅当窗口多于一个时，显示状态行
+" 设置 laststatus = 2 ，总是显式状态行
+set laststatus=2 
+
+nmap <C-Up> :vertical resize +10<CR> "扩大当前frame宽度
+nmap <C-Down> :vertical resize -10<CR> "减少当前frame宽度
+
+nmap <c-a> ggVG
+vmap <C-c> "+y
+"imap <C-v> <Esc>"*pa 原来的写法
+imap <C-v> <Esc>"+p
+
+" for mac use system clipboard
+" =====================
+vnoremap <C-y> :w !pbcopy<CR><CR>
+nmap <C-p> :r !pbpaste<CR><CR>
+" =====================
+
+imap jk <ESC>
+
+au BufNewFile,BufRead *.html,*.js,*.yaml,*.vue,*.md 
 \ set tabstop=2 |
 \ set softtabstop=2 |
 \ set shiftwidth=2 |
@@ -132,104 +156,56 @@ au BufNewFile,BufRead *.php,*.conf
 \ set fileformat=unix |
 
 
-
-
-" =========
-" vim-airline
-" =========
+" scheme
+" ==================================                                     
 "
-let g:airline_powerline_fonts = 1
-" 
- let g:airline#extensions#whitespace#enabled = 0
- let g:airline#extensions#whitespace#symbol = '!'
-" 
-let g:airline#extensions#tabline#enabled = 0
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#buffer_nr_show = 0
-let g:airline#extensions#tabline#formatter = 'default'
-let g:airline_theme = 'murmur'  " ‰∏ªÈ¢ò
-let g:airline#extensions#keymap#enabled = 1
-let g:airline#extensions#tabline#buffer_idx_mode = 1
-let g:airline#extensions#tabline#buffer_idx_format = {
-       \ '0': '0 ',
-       \ '1': '1 ',
-       \ '2': '2 ',
-       \ '3': '3 ',
-       \ '4': '4 ',
-       \ '5': '5 ',
-       \ '6': '6 ',
-       \ '7': '7 ',
-       \ '8': '8 ',
-       \ '9': '9 '
-       \}
-" ËÆæÁΩÆÂàáÊç¢tabÁöÑÂø´Êç∑ÈîÆ <\> + <i> ÂàáÊç¢Âà∞Á¨¨i‰∏™ tab
-nmap <leader>1 <Plug>AirlineSelectTab1
-nmap <leader>2 <Plug>AirlineSelectTab2
-nmap <leader>3 <Plug>AirlineSelectTab3
-nmap <leader>4 <Plug>AirlineSelectTab4
-nmap <leader>5 <Plug>AirlineSelectTab5
-nmap <leader>6 <Plug>AirlineSelectTab6
-nmap <leader>7 <Plug>AirlineSelectTab7
-nmap <leader>8 <Plug>AirlineSelectTab8
-nmap <leader>9 <Plug>AirlineSelectTab9
-" ËÆæÁΩÆÂàáÊç¢tabÁöÑÂø´Êç∑ÈîÆ <\> + <-> ÂàáÊç¢Âà∞Ââç‰∏Ä‰∏™ tab
-"nmap gT <Plug>AirlineSelectPrevTab
-" ËÆæÁΩÆÂàáÊç¢tabÁöÑÂø´Êç∑ÈîÆ <\> + <+> ÂàáÊç¢Âà∞Âêé‰∏Ä‰∏™ tab
-"nmap gt <Plug>AirlineSelectNextTab
-" ËÆæÁΩÆÂàáÊç¢tabÁöÑÂø´Êç∑ÈîÆ <\> + <q> ÈÄÄÂá∫ÂΩìÂâçÁöÑ tab
-nmap <leader>q :bp<cr>:bd #<cr>
+colorscheme PaperColor
 
-" 分类宽度调整快捷键
-"map <up> :res +5<CR>
-"map <down> :res -5<CR>
-"map <left> :vertical resize-5<CR>
-"map <right> :vertical resize+5<CR>
+" vim-translator                         
+" ==================================                                     
+" 在窗口中显示翻译                                                            
+"
+nmap <silent> <Leader>t <Plug>Translate      
+vmap <silent> <Leader>t <Plug>TranslateV
+" 将文字替换为翻译             
+nmap <silent> <Leader>r <Plug>TranslateR
+" 翻译剪贴板中的文字                                                                                     
+nmap <silent> <Leader>X <Plug>TranslateX
+
+
+" indentLine 
+" ====================================
+"
+let g:indentLine_color_term = 239
+let g:indentLine_color_tty_light = 7 " (default: 4)
+let g:indentLine_color_dark = 1 " (default: 2)
+let g:vim_json_syntax_conceal = 1 "" 为了防止导致json的引号自动隐藏
+let g:indentLine_noConcealCursor=""  " 为了防止导致json的引号自动隐藏
 
 
 
-" 显示状态行当前设置
 
-" 设置状态行显示常用信息
-" %F 完整文件路径名
-" %m 当前缓冲被修改标记
-" %m 当前缓冲只读标记
-" %h 帮助缓冲标记
-" %w 预览缓冲标记
-" %Y 文件类型
-" %b ASCII值
-" %B 十六进制值
-" %l 行数
-" %v 列数
-" %p 当前行数占总行数的的百分比
-" %L 总行数
-" %{...} 评估表达式的值，并用值代替
-" %{"[fenc=".(&fenc==""?&enc:&fenc).((exists("+bomb") && &bomb)?"+":"")."]"} 显示文件编码
-" %{&ff} 显示文件类型
-"set statusline=%F%m%r%h%w%=\ [ft=%Y]\ %{\"[fenc=\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\"+\":\"\").\"]\"}\ [ff=%{&ff}]\ [asc=%03.3b]\ [hex=%02.2B]\ [pos=%04l,%04v][%p%%]\ [len=%L]
-" set statusline=%F%m%r%h%w%=\ [Type=%Y]\ [pos=%04l,%04v]\ [%p%%]\ [line:\ %l\ of\ %L]
+" tagbar 
+" ===========================================
+"
+" p             Jump to the tag under the cursor, but stay in the Tagbar window.
+" P             Open the tag in a |preview-window|
+"  o/za          Toggle the fold under the cursor or the current one if there is no fold under the cursor.
+"  */zR          Open all folds by setting foldlevel to 99
+"  =/zM          Close all folds by setting foldlevel to 0.
 
-" 设置 laststatus = 0 ，不显式状态行
-" 设置 laststatus = 1 ，仅当窗口多于一个时，显示状态行
-" 设置 laststatus = 2 ，总是显式状态行
-set laststatus=2 
-
-nmap <c-a> ggVG
-vnoremap <c-y> :w !pbcopy<CR><CR>
-nmap <c-p> :r !pbpaste<CR><CR>
-imap jk <ESC>
-nnoremap <silent> <F4> :TagbarToggle<CR> " 将tagbar的开关按键设置为 F4
-
-vmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
 nnoremap <silent> <F4> :TagbarToggle<CR> " 将tagbar的开关按键设置为 F4"
-vmap <C-c> "+y
-imap <C-v> <Esc>"*pa
+
 " ultisnips config
+" ===========================================
+"
 let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 " netrw confing
+" ===============================================
+"
 let g:netrw_liststyle = 4
 let g:netrw_banner = 0
 let g:netrw_winsize = 25
@@ -240,8 +216,10 @@ let g:netrw_winsize = 25
 "
 "let g:netrw_browse_split =2
 
+
+
 " config of coc.nvim
-"
+" ===============================================================================
 
 let g:coc_global_extensions = ['coc-tsserver','coc-html','coc-css', 'coc-json','coc-yaml','coc-vetur','coc-eslint','coc-xml','coc-phpls', 'coc-markdownlint','coc-highlight']
 
@@ -270,30 +248,43 @@ set signcolumn=yes
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+"inoremap <silent><expr> <TAB>
+"      \ pumvisible() ? "\<C-n>" :
+"      \ <SID>check_back_space() ? "\<TAB>" :
+"      \ coc#refresh()
+"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+"function! s:check_back_space() abort
+"  let col = col('.') - 1
+"  return !col || getline('.')[col - 1]  =~# '\s'
+"endfunction
 
 " Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
+"inoremap <silent><expr> <cr> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
-if has('patch8.1.1068')
+"if has('patch8.1.1068')
   " Use `complete_info` if your (Neo)Vim version supports it.
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
+"  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+"else
+"  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+"
+  inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+  inoremap <silent><expr> <C-x><C-z> coc#pum#visible() ? coc#pum#stop() : "\<C-x>\<C-z>"
+  " remap for complete to use tab and <cr>
+  inoremap <silent><expr> <TAB>
+        \ coc#pum#visible() ? coc#pum#next(1):
+        \ <SID>check_back_space() ? "\<Tab>" :
+        \ coc#refresh()
+  inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+  inoremap <silent><expr> <c-space> coc#refresh()
 
-" Use `[g` and `]g` to navigate diagnostics
+  hi CocSearch ctermfg=12 guifg=#18A3FF
+  hi CocMenuSel ctermbg=109 guibg=#13354A
+
+"
+"endif" Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
@@ -327,7 +318,7 @@ nmap <leader>f  <Plug>(coc-format-selected)
 augroup mygroup
   autocmd!
   " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  autocmd FileType typescript,json,go,css,less,sass,html,php,python,xml,wxml,wxss,vue setl formatexpr=CocAction('formatSelected')
   " Update signature help on jump placeholder.
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
@@ -388,16 +379,23 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 
-" -------for Vim-go
+" for vim-go
+" ==================================
+"
 let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']"
 
 let g:go_highlight_types = 1
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
+"autocmd FileType go nmap <Leader>tj :GoAddTags<cr>
+"autocmd FileType go nmap <Leader>i <Plug>(go-info)
+"autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
 
 
-  " =============emmet==============================
+  " emmet
+  " ==============================
+  "
   let g:user_emmet_settings = {
   \ 'wxss': {
   \   'extends': 'css',
@@ -437,16 +435,15 @@ let g:go_info_mode='gopls'
   \ },
   \}
 
-" =========
 " emmet-vim
-" =========
+" ===================================================
 let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
 
 
-" =========
 " rainbow
-" =========
+" ===============================================
+"
 let g:rainbow_active = 1
 let g:rainbow_conf = {
 \   'guifgs': ['darkorange3', 'seagreen3', 'royalblue3', 'firebrick'],
@@ -473,6 +470,11 @@ let g:rainbow_conf = {
 
 " ===========nerdcommenter==============
 " add spaces after comment delimiters by default
+" <leader>cc   加注释
+" <leader>cu   解开注释
+" <leader>c<space>  加上/解开注释, 智能判断
+" <leader>cy   先复制, 再注解(p可以进行黏贴)
+"
 let g:NERDSpaceDelims = 1
 " python 自动的会多加一个空格
 au FileType python let g:NERDSpaceDelims = 0
@@ -497,3 +499,118 @@ let g:NERDTrimTrailingWhitespace = 1
 
 " Enable NERDCommenterToggle to check all selected lines is commented or not
 let g:NERDToggleCheckAllLines = 1
+
+
+"inoremap <silent><expr> <TAB>
+"      \ pumvisible() ? coc#_select_confirm() :
+"      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+"      \ <SID>check_back_space() ? "\<TAB>" :
+"      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+
+
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+" Use <leader>x for convert visual selected code to snippet
+xmap <leader>x  <Plug>(coc-convert-snippet)
+
+" 使用空格键关闭当前打开的折叠，或者打开当前关闭的折叠
+nnoremap <space> za
+
+
+" for coc-golang
+" =======================================================
+"
+autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
+"autocmd FileType go nmap <Leader>tj :CocCommand go.tags.add json<cr>
+autocmd FileType go nmap <Leader>ty :CocCommand go.tags.add yaml<cr>
+autocmd FileType go nmap <Leader>tx :CocCommand go.tags.add xorm<cr>
+autocmd FileType go nmap <Leader>tb :CocCommand go.tags.add bson<cr>
+autocmd FileType go nmap <Leader>tc :CocCommand go.tags.clear<cr>
+autocmd FileType go nmap <Leader>tlj :CocCommand go.tags.add.line json<cr>
+
+" for MarkdownPreview
+" =======================================================
+"
+let g:mkdp_path_to_chrome="/usr/bin/google-chrome-stable"
+let g:mkdp_auto_close=0
+nmap <F7> <Plug>MarkdownPreview
+nmap <F8> <Plug>StopMarkdownPreview
+
+
+" for airline
+" =======================================================
+"
+" 设置状态栏
+let g:airline_theme = 'desertink'  " 主题
+
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#whitespace#enabled = 0
+let g:airline#extensions#whitespace#symbol = '!'
+let g:airline#extensions#keymap#enabled = 0
+
+let g:airline#extensions#tabline#enabled = 0
+"let g:airline#extensions#tabline#left_sep = '>'
+"let g:airline#extensions#tabline#left_alt_sep = '>'
+"let g:airline#extensions#tabline#buffer_nr_show = 0
+"let g:airline#extensions#tabline#formatter = 'default'
+"
+"let g:airline#extensions#tabline#buffer_idx_mode = 0
+"let g:airline#extensions#tabline#buffer_idx_format = {
+"       \ '0': '0 ',
+"       \ '1': '1 ',
+"       \ '2': '2 ',
+"       \ '3': '3 ',
+"       \ '4': '4 ',
+"       \ '5': '5 ',
+"       \ '6': '6 ',
+"       \ '7': '7 ',
+"       \ '8': '8 ',
+"       \ '9': '9 '
+"       \}
+" 设置切换tab的快捷键 <\> + <i> 切换到第i个 tab
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
+" 设置切换tab的快捷键 <\> + <-> 切换到前一个 tab
+"nmap gT <Plug>AirlineSelectPrevTab
+" 设置切换tab的快捷键 <\> + <+> 切换到后一个 tab
+" nmap gt <Plug>AirlineSelectNextTab
+" 设置切换tab的快捷键 <\> + <q> 退出当前的 tab
+"nmap <leader>q :bp<cr>:bd #<cr>
+" 修改了一些个人不喜欢的字符
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_symbols.linenr = "CL" " current line
+let g:airline_symbols.whitespace = '|'
+let g:airline_symbols.maxlinenr = 'Ml' "maxline
+let g:airline_symbols.branch = 'BR'
+let g:airline_symbols.readonly = "RO"
+let g:airline_symbols.dirty = "DT"
+let g:airline_symbols.crypt = "CR"
