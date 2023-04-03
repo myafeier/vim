@@ -1,6 +1,6 @@
 {
   "coc.preferences.formatOnType": true,
-  "coc.preferences.formatOnSaveFiletypes": ["python", "go", "vue", "html", "js", "typescript", "json", "php", "xml"],
+  "coc.preferences.formatOnSave": true,
 
   "prettier.singleQuote": true,
   "prettier.jsxSingleQuote": true,
@@ -28,6 +28,7 @@
     }
   },
   "suggest.noselect": false,
-  "suggest.floatEnable": true,
+  "suggest.enableFloat": true,
+
   "snippets.ultisnips.directories": ["~/.vim/plugged/vim-go/gosnippets/UltiSnips"]
 }

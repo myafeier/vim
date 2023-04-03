@@ -6,11 +6,11 @@ endif
 
 
 call plug#begin('~/.vim/plugged')
-Plug 'neoclide/coc.nvim', {'branch': 'release', 'tag':'v0.0.80'}
+Plug 'neoclide/coc.nvim'
 Plug 'vim/killersheep'
 " Plug 'dart-lang/dart-vim-plugin'
 " for golang 
-" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'honza/vim-snippets'
 " end 
 Plug 'NLKNguyen/papercolor-theme'
