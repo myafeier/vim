@@ -11,7 +11,7 @@ Plug 'vim/killersheep'
 " Plug 'dart-lang/dart-vim-plugin'
 " for golang 
 " Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'SirVer/ultisnips'
+Plug 'honza/ultisnips'
 " end 
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'mattn/emmet-vim'
