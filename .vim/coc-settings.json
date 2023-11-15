@@ -1,7 +1,8 @@
 {
   "coc.preferences.formatOnType": true,
-  "coc.preferences.formatOnSave": true,
-   "coc.preferences.formatOnSaveFiletypes": ["css", "markdown","vue", "json","html","js","ts"],
+  "coc.preferences.formatOnSaveFiletypes": ["css", "markdown", "vue", "json", "html", "javascript", "typescript", "python", "php", "go", "xml", "wxml", "wxss", "json"],
+  "coc.preferences.formatOnTypeFiletypes": ["css", "markdown", "vue", "json", "html", "javascript", "typescript", "python", "php", "go", "xml", "wxml", "wxss", "json"],
+
   "prettier.singleQuote": true,
   "prettier.jsxSingleQuote": true,
   "prettier.trailingComma": "none",
@@ -10,6 +11,8 @@
   "prettier.arrowParens": "avoid",
   "prettier.bracketSameLine": true,
   "prettier.printWidth": 1000,
+  "prettier.useEditorConfig": false,
+  "xml.java.home": "/usr/lib/jvm/java-11-openjdk-amd64",
 
   "languageserver": {
     "arduino": {
@@ -17,18 +20,10 @@
       "rootPatterns": ["*.ino"],
       "filetypes": ["arduino"],
       "args": ["-cli", "/usr/local/bin/arduino-cli", "-clangd", "/usr/bin/clangd", "-cli-config", "$HOME/.arduino15/arduino-cli.yaml"]
-    },
-    "golang": {
-      "command": "gopls",
-      "rootPatterns": ["go.work", "go.mod"],
-      "filetypes": ["go"],
-      "initializationOptions": {
-        "usePlaceholders": true
-      }
     }
   },
   "suggest.noselect": false,
-  "suggest.enableFloat": true,
 
-  "snippets.ultisnips.directories": ["~/.vim/plugged/vim-go/gosnippets/UltiSnips"]
+  "snippets.ultisnips.directories": ["~/.vim/plugged/vim-go/gosnippets/UltiSnips"],
+  "snippets.ultisnips.pythonPrompt": false
 }
