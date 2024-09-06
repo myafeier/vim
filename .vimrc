@@ -4,12 +4,11 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-
 call plug#begin('~/.vim/plugged')
-Plug 'neoclide/coc.nvim'
-Plug 'vim/killersheep'
 " Plug 'dart-lang/dart-vim-plugin'
 " for golang 
+Plug 'neoclide/coc.nvim'
+Plug 'vim/killersheep'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -31,7 +30,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
 Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
 Plug 'github/copilot.vim'
-
+"
 "Plug 'akretion/vim-odoo-snippets"
 
 
@@ -41,11 +40,12 @@ call plug#end()
 set background=dark
 "set background=light
 
-set clipboard=unnamedplus
+
+set maxmempattern=500000
 
 set noswapfile
 
-let &termencoding=&encoding
+"let &termencoding=&encoding
 set fileencodings=utf-8,gbk
 
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
@@ -60,11 +60,12 @@ endif
 
 set helplang=cn "显示中文帮助
 set mouse=a
-set clipboard=autoselect
 
 set hlsearch "搜索结果高亮显示
 
-set clipboard=unnamedplus
+"set clipboard=unnamedplus " 使用系统剪切板，mac下有问题，unnamed
+"有更好的兼容性
+set clipboard=unnamed
 
 syntax on "开启语法高亮
 set autoread " 设置当文件被改动时自动载入
@@ -116,6 +117,10 @@ filetype plugin on
 filetype indent on
 
 
+" indentLine 
+autocmd FileType json,markdown let g:indentLine_conceallevel = 0
+" vim-json
+autocmd FileType json,markdown let g:vim_json_syntax_conceal = 0
 
 
 " 分类宽度调整快捷键
